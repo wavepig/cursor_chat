@@ -14,7 +14,7 @@
         body { 
             padding: 20px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fb;
+            background-color: #91b9f5;
             line-height: 1.6;
         }
 
@@ -25,6 +25,11 @@
             display: flex;
             gap: 20px;
             height: calc(100vh - 40px);
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         /* 聊天区域样式 */
@@ -34,8 +39,18 @@
             flex-direction: column;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             padding: 20px;
+        }
+
+        /* 区域标题样式 */
+        .chat-header h2,
+        .user-profile h3,
+        .online-users h3 {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            color: #2c3e50;
         }
 
         /* 用户区域样式 */
@@ -51,7 +66,7 @@
             background: white;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         /* 用户列表区域样式 */
@@ -59,7 +74,7 @@
             background: white;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             flex: 1;
         }
 
@@ -182,7 +197,7 @@
         .user {
             padding: 8px;
             margin: 4px 0;
-            background: #f8f9fa;
+            background: rgba(240, 242, 245, 0.6);
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -204,6 +219,42 @@
 
         .message {
             animation: fadeIn 0.3s ease-out;
+        }
+
+        /* 消息输入区域样式 */
+        .message-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .message-input input {
+            flex: 1;
+        }
+
+        .message-input button {
+            white-space: nowrap;
+        }
+
+        /* 用户名表单样式 */
+        .username-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .username-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .username-input-group input {
+            flex: 1;
+        }
+
+        .username-input-group button {
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -229,12 +280,14 @@
             <div class="user-profile">
                 <h3>个人信息</h3>
                 <div class="username-form">
-                    <input type="text" 
-                           id="newUsername" 
-                           placeholder="输入新用户名" 
-                           maxlength="20"
-                           onkeypress="handleUsernameKeyPress(event)">
-                    <button onclick="changeUsername()">修改用户名</button>
+                    <div class="username-input-group">
+                        <input type="text" 
+                               id="newUsername" 
+                               placeholder="输入新用户名" 
+                               maxlength="20"
+                               onkeypress="handleUsernameKeyPress(event)">
+                        <button onclick="changeUsername()">修改用户名</button>
+                    </div>
                     <div id="usernameError" class="error-message"></div>
                 </div>
             </div>
