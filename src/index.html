@@ -3,12 +3,14 @@
 <head>
     <title>Multi-User Chat Demo</title>
     <style>
+        /* 基础样式重置 */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        /* 页面基础样式 */
         body { 
             padding: 20px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,6 +18,7 @@
             line-height: 1.6;
         }
 
+        /* 主容器布局 */
         .container { 
             max-width: 1200px;
             margin: 0 auto;
@@ -24,6 +27,7 @@
             height: calc(100vh - 40px);
         }
 
+        /* 聊天区域样式 */
         .chat-area { 
             flex: 1;
             display: flex;
@@ -34,6 +38,7 @@
             padding: 20px;
         }
 
+        /* 用户区域样式 */
         .users-area { 
             width: 300px;
             display: flex;
@@ -41,6 +46,7 @@
             gap: 20px;
         }
 
+        /* 用户信息卡片样式 */
         .user-profile {
             background: white;
             border-radius: 10px;
@@ -48,18 +54,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .user-profile h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .username-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
+        /* 用户列表区域样式 */
         .online-users {
             background: white;
             border-radius: 10px;
@@ -68,12 +63,7 @@
             flex: 1;
         }
 
-        .online-users h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
+        /* 消息显示区域样式 */
         #wsMessages { 
             flex: 1;
             overflow-y: auto;
@@ -84,17 +74,7 @@
             background: #fafafa;
         }
 
-        #wsMessages::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        .message-input {
-            display: flex;
-            gap: 10px;
-        }
-
+        /* 消息气泡基础样式 */
         .message { 
             margin: 8px 0;
             padding: 10px;
@@ -105,6 +85,7 @@
             clear: both;
         }
 
+        /* 当前用户消息样式 */
         .client { 
             background-color: #dcf8c6;
             border-top-right-radius: 2px;
@@ -112,6 +93,7 @@
             margin-left: auto;
         }
 
+        /* 当前用户消息箭头 */
         .client::before {
             content: "";
             position: absolute;
@@ -122,12 +104,14 @@
             border-color: transparent #dcf8c6 transparent transparent;
         }
 
+        /* 其他用户消息样式 */
         .other { 
             background-color: #e3f2fd;
             border-top-left-radius: 2px;
             float: left;
         }
 
+        /* 其他用户消息箭头 */
         .other::before {
             content: "";
             position: absolute;
@@ -138,6 +122,7 @@
             border-color: transparent #e3f2fd transparent transparent;
         }
 
+        /* 系统消息样式 */
         .system, .join, .leave, .rename { 
             float: none;
             margin: 8px auto;
@@ -149,10 +134,12 @@
             font-size: 0.9em;
         }
 
+        /* 不同类型系统消息的颜色 */
         .join { color: #2ecc71; }
         .leave { color: #95a5a6; }
         .rename { color: #9b59b6; }
 
+        /* 表单和输入框样式 */
         input[type="text"] {
             width: 100%;
             padding: 12px;
@@ -168,6 +155,7 @@
             box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
         }
 
+        /* 按钮样式 */
         button {
             padding: 12px 24px;
             background-color: #3498db;
@@ -183,12 +171,14 @@
             background-color: #2980b9;
         }
 
+        /* 错误消息样式 */
         .error-message {
             color: #e74c3c;
             font-size: 0.9em;
             margin-top: 5px;
         }
 
+        /* 用户列表项样式 */
         .user {
             padding: 8px;
             margin: 4px 0;
@@ -199,21 +189,14 @@
             gap: 8px;
         }
 
+        /* 在线状态指示器 */
         .user::before {
             content: "•";
             color: #2ecc71;
             font-size: 1.5em;
         }
 
-        .chat-header {
-            margin-bottom: 15px;
-        }
-
-        .chat-header h2 {
-            color: #2c3e50;
-            font-size: 1.5em;
-        }
-
+        /* 消息动画效果 */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -225,18 +208,24 @@
     </style>
 </head>
 <body>
+    <!-- 主容器 -->
     <div class="container">
+        <!-- 聊天区域 -->
         <div class="chat-area">
             <div class="chat-header">
                 <h2>聊天室</h2>
             </div>
+            <!-- 消息显示区域 -->
             <div id="wsMessages"></div>
+            <!-- 消息输入区域 -->
             <div class="message-input">
                 <input type="text" id="wsInput" placeholder="输入消息..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendWsMessage()">发送</button>
             </div>
         </div>
+        <!-- 用户信息区域 -->
         <div class="users-area">
+            <!-- 用户资料卡片 -->
             <div class="user-profile">
                 <h3>个人信息</h3>
                 <div class="username-form">
@@ -249,6 +238,7 @@
                     <div id="usernameError" class="error-message"></div>
                 </div>
             </div>
+            <!-- 在线用户列表 -->
             <div class="online-users">
                 <h3>在线用户</h3>
                 <div id="usersList"></div>
@@ -257,11 +247,13 @@
     </div>
 
     <script>
+        // 全局变量
         let currentUserId = null;
         let ws = new WebSocket('ws://' + window.location.host + '/ws');
         const wsMessages = document.getElementById('wsMessages');
         const usersList = document.getElementById('usersList');
 
+        // 处理消息输入框的回车事件
         function handleKeyPress(event) {
             if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
@@ -269,6 +261,7 @@
             }
         }
 
+        // 处理用户名输入框的回车事件
         function handleUsernameKeyPress(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -276,22 +269,26 @@
             }
         }
 
+        // 修改用户名功能
         async function changeUsername() {
             const input = document.getElementById('newUsername');
             const newUsername = input.value.trim();
             const errorElement = document.getElementById('usernameError');
             
+            // 验证用户是否已连接
             if (!currentUserId) {
                 errorElement.textContent = '未连接到服务器';
                 return;
             }
 
+            // 验证用户名不为空
             if (!newUsername) {
                 errorElement.textContent = '用户名不能为空';
                 return;
             }
 
             try {
+                // 发送用户名修改请求
                 const response = await fetch('/api/rename', {
                     method: 'POST',
                     headers: {
@@ -317,6 +314,7 @@
             }
         }
 
+        // 显示通知消息
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.textContent = message;
@@ -338,31 +336,42 @@
             }, 3000);
         }
 
+        // WebSocket事件处理器
         ws.onopen = function() {
             addMessage('连接成功', 'system');
         };
 
+        // 处理接收到的WebSocket消息
         ws.onmessage = function(event) {
             const message = JSON.parse(event.data);
             
             switch(message.message_type) {
                 case 'chat':
+                    // 处理聊天消息
                     const messageClass = message.user_id === currentUserId ? 'client' : 'other';
-                    addMessage(`${message.user_id}: ${message.content}`, messageClass);
+                    if (messageClass === 'client') {
+                        addMessage(message.content, messageClass);
+                    } else {
+                        addMessage(message, messageClass);
+                    }
                     break;
                 case 'join':
-                    addMessage(`${message.user_id} 加入了聊天室`, 'join');
+                    // 处理用户加入消息
+                    addMessage(message.content, 'join');
                     if (!currentUserId) {
                         currentUserId = message.user_id;
                     }
                     break;
                 case 'leave':
-                    addMessage(`${message.user_id} 离开了聊天室`, 'leave');
+                    // 处理用户离开消息
+                    addMessage(message.content, 'leave');
                     break;
                 case 'rename':
+                    // 处理用户名修改消息
                     addMessage(message.content, 'rename');
                     break;
                 case 'users':
+                    // 更新用户列表
                     updateUsersList(JSON.parse(message.content));
                     break;
             }
@@ -376,6 +385,7 @@
             addMessage('连接错误: ' + error.message, 'system');
         };
 
+        // 发送WebSocket消息
         function sendWsMessage() {
             const input = document.getElementById('wsInput');
             const text = input.value.trim();
@@ -387,29 +397,38 @@
             }
         }
 
+        // 添加消息到聊天区域
         function addMessage(message, type) {
             const div = document.createElement('div');
             div.className = 'message ' + type;
             
             if (type === 'client' || type === 'other') {
-                const [userId, content] = message.split(': ');
                 if (type === 'client') {
-                    div.textContent = content;
+                    // 当前用户的消息
+                    div.textContent = message;
                 } else {
-                    div.textContent = content;
+                    // 其他用户的消息
+                    const content = document.createElement('div');
+                    content.textContent = message.content;
+                    
                     const userSpan = document.createElement('div');
                     userSpan.style.cssText = 'font-size: 0.8em; color: #666; margin-bottom: 2px;';
-                    userSpan.textContent = userId;
-                    div.insertBefore(userSpan, div.firstChild);
+                    userSpan.textContent = message.username || '未知用户';
+                    
+                    div.appendChild(userSpan);
+                    div.appendChild(content);
                 }
             } else {
+                // 系统消息
                 div.textContent = message;
             }
             
+            // 添加消息并滚动到底部
             wsMessages.appendChild(div);
             wsMessages.scrollTop = wsMessages.scrollHeight;
         }
 
+        // 更新用户列表
         function updateUsersList(users) {
             usersList.innerHTML = users
                 .map(user => `<div class="user">${user}</div>`)
