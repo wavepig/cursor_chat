@@ -49,7 +49,7 @@ async fn handle_socket(
     // 发送欢迎消息和当前用户列表
     let join_message = WsMessage {
         user_id: user_id.clone(),
-        content: format!("{} joined the chat", initial_username),
+        content: format!("{} 进入聊天室", initial_username),
         message_type: "join".to_string(),
         username: Some(initial_username.clone()),
     };
@@ -118,7 +118,7 @@ async fn handle_socket(
         // 广播离开消息
         let leave_message = WsMessage {
             user_id: user_id.clone(),
-            content: format!("{} left the chat", username),
+            content: format!("{} 离开聊天室", username),
             message_type: "leave".to_string(),
             username: Some(username),
         };
